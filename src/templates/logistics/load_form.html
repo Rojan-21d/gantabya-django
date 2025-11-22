@@ -1,0 +1,63 @@
+{% extends "main/base.html" %}
+
+{% block title %}Create Load{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Post a New Load</h2>
+    <p>Fill out the details below to make your load available for carriers.</p>
+    <hr>
+    <form method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+            {{ form.name.label_tag }}
+            {{ form.name }}
+        </div>
+        <div class="mb-3">
+            {{ form.description.label_tag }}
+            {{ form.description }}
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form.pickup_address.label_tag }}
+                {{ form.pickup_address }}
+            </div>
+            <div class="col-md-6">
+                {{ form.destination_address.label_tag }}
+                {{ form.destination_address }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form.pickup_latitude.label_tag }}
+                {{ form.pickup_latitude }}
+            </div>
+            <div class="col-md-6">
+                {{ form.pickup_longitude.label_tag }}
+                {{ form.pickup_longitude }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form.destination_latitude.label_tag }}
+                {{ form.destination_latitude }}
+            </div>
+            <div class="col-md-6">
+                {{ form.destination_longitude.label_tag }}
+                {{ form.destination_longitude }}
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-6">
+                {{ form.weight.label_tag }}
+                {{ form.weight }}
+            </div>
+            <div class="col-md-6">
+                {{ form.scheduled_date.label_tag }}
+                {{ form.scheduled_date }}
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit Load</button>
+    </form>
+</div>
+{% endblock %}

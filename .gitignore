@@ -1,0 +1,50 @@
+# Python compiled files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Django database
+db.sqlite3
+*.sqlite3
+
+# Environment variables
+.env
+.env.*
+
+# Django local settings, logs, media and static files
+local_settings.py
+*.log
+media/
+staticfiles/
+static/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Test & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE / editor configs
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+# Distribution / build
+build/
+dist/
+*.egg-info/
+
+# Celery
+celerybeat-schedule
+
+# Node / frontend (if present)
+node_modules/
+npm-debug.log
+yarn-error.log

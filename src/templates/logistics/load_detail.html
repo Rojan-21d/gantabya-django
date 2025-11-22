@@ -1,0 +1,49 @@
+{% extends "main/base.html" %}
+
+{% block title %}Load Details{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3>{{ load.name }}</h3>
+        </div>
+        <div class="card-body">
+            <p><strong>Description:</strong> {{ load.description }}</p>
+            <p><strong>Status:</strong> <span class="badge bg-info text-dark">{{ load.get_status_display }}</span></p>
+            <hr>
+            <p><strong>Pickup Address:</strong> {{ load.pickup_address }}</p>
+            <p><strong>Destination Address:</strong> {{ load.destination_address }}</p>
+            <p><strong>Weight:</strong> {{ load.weight }} kg</p>
+            <p><strong>Scheduled Date:</strong> {{ load.scheduled_date }}</p>
+            <p><strong>Posted by:</strong> {{ load.consignor.username }}</p>
+        </div>
+        <div class="card-footer">
+            {% if user.user_type == 'carrier' and load.status == 'PENDING' %}
+                <form action="{% url 'book_load' load.id %}" method="post">
+                    {% csrf_token %}
+                    {% if price_options %}
+                        <div class="mb-2">
+                            <strong>Select pricing</strong><br>
+                            {% for key, opt in price_options.items %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="algorithm" id="detail-{{ key }}" value="{{ key }}" {% if forloop.first %}checked{% endif %} {% if not opt.price %}disabled{% endif %}>
+                                    <label class="form-check-label" for="detail-{{ key }}">
+                                        {{ opt.label }} — 
+                                        {% if opt.price %}
+                                            NPR {{ opt.price }}{% if opt.distance_km %} ({{ opt.distance_km }} km){% endif %}
+                                        {% else %}Not enough location data{% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <button type="submit" class="btn btn-success">Book This Load Now</button>
+                </form>
+            {% elif load.status != 'PENDING' %}
+                <p class="text-muted">This load has already been booked.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

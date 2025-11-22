@@ -1,0 +1,89 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Home - Carrier{% endblock %}
+<!-- 
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/maincontentstyle.css' %}">
+<script src="https://kit.fontawesome.com/7b1b8b2fa3.js" crossorigin="anonymous"></script>
+
+<div class="main-content">
+    <h2>Loads for You</h2>
+
+    {% if loads %}
+        {% for load in loads %}
+            <div class="post-container">
+                <div class="user-info">
+                    <div class="detail">
+                        <img src="{{ load.consignor_img.url }}" alt="">
+                        <div>
+                            <p>{{ load.consignor_name }}</p>
+                            <small>{{ load.dateofpost }}</small>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+
+                <div class="content-detail">
+                    <div class="content-image">
+                        <img src="{{ load.img_srcs.url }}" alt="Image" class="post-img">
+                    </div>
+                    <div class="content-description">
+                        <h3>{{ load.name }}</h3>
+                        <ul>
+                            <li>Origin: {{ load.origin }}</li>
+                            <li>Destination: {{ load.destination }}</li>
+                            <li>Distance: {{ load.distance }} Km</li>
+                            <li>Weight: {{ load.weight }} Ton</li>
+                            <li>Description: {{ load.description }}</li>
+                            <li>Price: {{ load.price }}</li>
+                        </ul>
+                    </div>
+                </div>
+                <hr>
+                <div class="activity-icon booked">
+                    <form action="{% url 'book-load' %}" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="load_id" value="{{ load.id }}">
+                        <input type="hidden" name="consignor_id" value="{{ load.consignor_id }}">
+                        <button type="submit">
+                            <i class="fa-solid fa-handshake-simple"> Book</i>
+                        </button>
+                    </form>
+                </div>                  
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No loads available at the moment.</p>
+    {% endif %}
+</div>
+{% endblock %} -->
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Available Loads for Booking</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% for load in loads %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">{{ load.name }}</h5>
+                <p class="card-text">
+                    <strong>From:</strong> {{ load.pickup_address }}<br>
+                    <strong>To:</strong> {{ load.destination_address }}<br>
+                    <strong>Weight:</strong> {{ load.weight }} kg<br>
+                    <strong>Scheduled for:</strong> {{ load.scheduled_date }}
+                </p>
+                <a href="{% url 'load_detail' load.id %}" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+    {% empty %}
+        <p>No available loads at the moment. Please check back later.</p>
+    {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "gantabya"
+version = "0.1.0"
+description = ""
+authors = ["Rojan-21d <roozandumaru@gmail.com>"]
+readme = "README.md"
+packages = [{include = "gantabya", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.2.4"
+pillow = "^11.3.0"
+django-jazzmin = "^3.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

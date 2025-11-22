@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />    
+    <script src="{% static 'js/fontAwesome.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <title>Gantabya - Log in</title>
+</head>
+<body>
+    <div class="container"> 
+        <div class="form-box">
+            <h1>Log In</h1>  
+            {% if form.non_field_errors %}
+                <div class="error-message">{{ form.non_field_errors.0 }}</div>
+            {% endif %}
+
+            <form method="post" autocomplete="off" novalidate>
+                {% csrf_token %}
+                <div class="input-group-login">
+                    <div class="input-field">
+                        <i class="fa-solid fa-user"></i>
+                        {{ form.email }}
+                    </div>
+                    <div class="input-field">
+                        <i class="fa-solid fa-key"></i>
+                        {{ form.password }}
+                        <i class="fa-regular fa-eye" id="togglePassword"></i>
+                    </div>
+                </div>
+                
+                <div class="user-selects">
+                    <div class="carrier-part">
+                        <input type="radio" id="carrier" name="user_type" value="carrier" {% if form.user_type.value == "carrier" %}checked{% endif %}>
+                        <label for="carrier">Carrier</label>
+                    </div>
+                    <div class="consignor-part">
+                        <input type="radio" id="consignor" name="user_type" value="consignor" {% if form.user_type.value == "consignor" %}checked{% endif %}>
+                        <label for="consignor">Consignor</label>
+                    </div>
+                    {% if form.user_type.errors %}
+                        <div class="error-message">{{ form.user_type.errors.0 }}</div>
+                    {% endif %}
+                </div>
+
+
+                <small><a href="#">Forgot Password?</a></small>
+                
+                <div class="btn-field">
+                    <button type="submit">Log In</button>
+                </div>
+
+                <small><a href="{% url 'register' %}">Sign Up Here!</a></small>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'js/showpwd.js' %}"></script>
+</body>
+</html>

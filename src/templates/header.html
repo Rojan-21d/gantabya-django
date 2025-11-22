@@ -1,0 +1,47 @@
+{% load static %}
+
+<header>
+    <nav>
+        <a href="{% url 'home' %}">
+            <img class="logo" src="{% static 'defaultImg/mainLogo2.png' %}" alt="logo">
+        </a>
+        <div class="nav__links">
+            {% if request.user.is_authenticated %}
+                <img src="{{ request.user.profile_pic.url|default_if_none:'' }}" onclick="toggleMenu()" alt="avatar">
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </div>
+
+        <!-- dropdown -->
+        <div class="sub-menu-wrap" id="subMenu">
+            <div class="sub-menu">
+                {% if request.user.is_authenticated %}
+                    <div class="user-info">
+                        <img src="{{ request.user.profile_pic.url|default_if_none:'' }}">
+                        <h2>{{ request.user.username|default:'User' }}</h2>
+                    </div>
+                    <hr>
+                    <a href="{% url 'profile' %}" class="sub-menu-link">
+                        <img src="{{ request.user.profile_pic.url|default_if_none:'' }}">
+                        <p>Profile</p>
+                    </a>
+                    <a href="{% url 'home' %}" class="sub-menu-link">
+                        <img src="{% static 'defaultImg/home.png' %}">
+                        <p>Home</p>
+                    </a>
+                    <form method="post" action="{% url 'logout' %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="sub-menu-link" style="background:none; border:none; padding:0; cursor:pointer; display:flex; align-items:center;">
+                            <img src="{% static 'defaultImg/logout.png' %}">
+                            <p style="margin:0;">Logout</p>
+                        </button>
+                    </form>
+                {% endif %}
+
+            </div>
+        </div>
+    </nav>
+</header>
+
+<script src="{% static 'js/dropdownmenu.js' %}"></script>

@@ -1,0 +1,80 @@
+{% extends "main/base.html" %}
+{% load static %}
+
+{% block title %}Home - Consignor{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/maincontentstyle.css' %}">
+<link rel="stylesheet" href="{% static 'css/sweetAlert.css' %}">
+<script src="{% static 'js/sweetalert.js' %}"></script>
+
+<div class="congmain">
+    <form action="{% url 'add_load' %}" method="post" class="addForm">
+        {% csrf_token %}
+        <button type="submit" name="addLoad">ADD LOAD</button>
+    </form>
+
+    <div class="table-container">
+        <div class="head">
+             <h2>Your Loads</h2>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th width="2%">S.N.</th>
+                    <th width="40%">Name</th>
+                    <th width="5%">Photo</th>
+                    <th width="10%">Date of Uploaded</th>
+                    <th width="15%">Status</th>
+                    <th width="20%">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if loads %}
+                    {% for load in loads %}
+                        <tr class="tr-bottom">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ load.name }}</td>
+                            <td><img src="{{ load.img_srcs.url }}" alt="{{ load.name }}"></td>
+                            <td>{{ load.dateofpost }}</td>
+                            <td>
+                                {% if load.status == "notBooked" %}
+                                    <p class="status notBooked">Not Booked</p>
+                                {% elif load.status == "booked" %}
+                                    <p class="status booked">Booked</p>
+                                {% elif load.status == "delivered" %}
+                                    <p class="status delivered">Delivered</p>
+                                {% else %}
+                                    <p class="status">{{ load.status }}</p>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="td-center">
+                                    <form action="{% url 'load_more' %}" method="post" class="moreBtn">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="more">
+                                        <input type="hidden" name="id" value="{{ load.id }}">
+                                        <button type="submit">More</button>
+                                    </form>
+                    
+                                    <form action="{% url 'load_delete' %}" method="post" class="deleteBtn" onsubmit="return confirmDelete(event)">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="action" value="delete">
+                                        <input type="hidden" name="id" value="{{ load.id }}">
+                                        <input type="hidden" name="img_srcs" value="{{ load.img_srcs.url|escape }}">
+                                        <button type="submit">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="6">No loads found.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="{% static 'js/confirmationSA.js' %}"></script>
+{% endblock %}

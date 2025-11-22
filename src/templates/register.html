@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Gantabya - Sign up</title>
+    <link rel="stylesheet" href="{% static 'css/registration.css' %}">
+    <link rel="stylesheet" href="{% static 'css/sweetAlert.css' %}">
+    <script src="{% static 'js/sweetalert.js' %}"></script>
+    <script src="{% static 'js/fontAwesome.js' %}"></script>
+</head>
+<body>
+<div class="container">
+    <div class="form-box">
+        <div class="topic">
+            <h1>Sign Up</h1>
+        </div>
+
+        {% if messages %}
+            {% for message in messages %}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+                        Swal.fire({
+                            title: "{{ message }}",
+                            icon: "success"
+                        });
+                    });
+                </script>
+            {% endfor %}
+        {% endif %}
+
+        <div class="content">
+            <div class="logo-section">
+                <img class="logo-img" src="{% static 'defaultImg/mainLogo2.png' %}" alt="logo">
+            </div>
+            <div class="input-section">
+                <form method="post" enctype="multipart/form-data" novalidate autocomplete="off">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+
+                    <!-- Username -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-user left"></i>
+                            {{ form.username }}
+                            {{ form.username.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Email -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-envelope left"></i>
+                            {{ form.email }}
+                            {{ form.email.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Password1 -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-key left"></i>
+                            {{ form.password1 }}
+                            {{ form.password1.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Password2 -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-key left"></i>
+                            {{ form.password2 }}
+                            {{ form.password2.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Contact -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-phone left"></i>
+                            {{ form.contact }}
+                            {{ form.contact.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Address -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-regular fa-address-card left"></i>
+                            {{ form.address }}
+                            {{ form.address.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Carrier vehicle info (optional) -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-truck left"></i>
+                            {{ form.vehicle_type }}
+                            {{ form.vehicle_type.errors }}
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-weight-scale left"></i>
+                            {{ form.vehicle_capacity_kg }}
+                            {{ form.vehicle_capacity_kg.errors }}
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-gas-pump left"></i>
+                            {{ form.base_rate_per_km }}
+                            {{ form.base_rate_per_km.errors }}
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-location-dot left"></i>
+                            {{ form.current_latitude }}
+                            {{ form.current_latitude.errors }}
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-location-crosshairs left"></i>
+                            {{ form.current_longitude }}
+                            {{ form.current_longitude.errors }}
+                        </div>
+                    </div>
+
+                    <!-- Profile Pic -->
+                    <div class="input-group">
+                        <div class="input-field">
+                            <i class="fa-solid fa-image left"></i>
+                            {{ form.profile_pic }}
+                            {{ form.profile_pic.errors }}
+                        </div>
+                    </div>
+
+                    <!-- User Type -->
+                    <div class="user-selects">
+                        {{ form.user_type.errors }}
+                        {% for radio in form.user_type %}
+                            <div class="input-field">
+                                {{ radio.tag }}
+                                <label for="{{ radio.id_for_label }}">{{ radio.choice_label }}</label>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="btn-field">
+                        <button type="submit">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="last">
+            <small>Already have an account? <a href="{% url 'login' %}">Log in here!</a></small>
+        </div>
+    </div>
+</div>
+
+<script src="{% static 'js/showpwd.js' %}"></script>
+</body>
+</html>

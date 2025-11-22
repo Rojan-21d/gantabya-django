@@ -1,0 +1,60 @@
+{% extends "main/base.html" %}
+
+{% block title %}Available Loads{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Available Loads for Booking</h2>
+    <hr>
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if load_cards %}
+        {% for item in load_cards %}
+            {% with load=item.load prices=item.prices %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">{{ load.name }}</h5>
+                    <p class="card-text">
+                        <strong>From:</strong> {{ load.pickup_address }}<br>
+                        <strong>To:</strong> {{ load.destination_address }}<br>
+                        <strong>Weight:</strong> {{ load.weight }} kg<br>
+                        <strong>Scheduled for:</strong> {{ load.scheduled_date }}<br>
+                        {% if prices.distance.distance_km %}
+                            <strong>Distance (haversine):</strong> {{ prices.distance.distance_km }} km
+                        {% endif %}
+                    </p>
+                    <form action="{% url 'book_load' load.id %}" method="post" class="mb-2">
+                        {% csrf_token %}
+                        <div class="mb-2">
+                            <strong>Pricing options</strong><br>
+                            {% for key, opt in prices.items %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="algorithm" id="{{ load.id }}-{{ key }}" value="{{ key }}" {% if forloop.first %}checked{% endif %} {% if not opt.price %}disabled{% endif %}>
+                                    <label class="form-check-label" for="{{ load.id }}-{{ key }}">
+                                        {{ opt.label }} — 
+                                        {% if opt.price %}
+                                            NPR {{ opt.price }}
+                                            {% if opt.distance_km %}( {{ opt.distance_km }} km ){% endif %}
+                                        {% else %}
+                                            Not enough location data
+                                        {% endif %}
+                                    </label>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <button type="submit" class="btn btn-success">Book Now</button>
+                        <a href="{% url 'load_detail' load.id %}" class="btn btn-link">View Details</a>
+                    </form>
+                </div>
+            </div>
+            {% endwith %}
+        {% endfor %}
+    {% else %}
+        <p>No available loads at the moment. Please check back later.</p>
+    {% endif %}
+</div>
+{% endblock %}
